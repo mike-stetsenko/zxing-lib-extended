@@ -20,9 +20,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.hardware.Camera;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Display;
+import android.view.Surface;
 import android.view.WindowManager;
 
 import com.google.zxing.client.android.PreferencesActivity;
@@ -58,27 +60,37 @@ final class CameraConfigurationManager {
   /**
    * Reads, one time, values from the camera that are needed by the app.
    */
+  @SuppressWarnings("deprecation")
   void initFromCameraParameters(Camera camera) {
     Camera.Parameters parameters = camera.getParameters();
     WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
     Display display = manager.getDefaultDisplay();
-    int width = display.getWidth();
-    int height = display.getHeight();
-    // We're landscape-only, and have apparently seen issues with display thinking it's portrait 
-    // when waking from sleep. If it's not landscape, assume it's mistaken and reverse them:
-    if (width < height) {
-      Log.i(TAG, "Display reports portrait orientation; assuming this is incorrect");
-      int temp = width;
-      width = height;
-      height = temp;
+
+    screenResolution = new Point();
+    if (Build.VERSION.SDK_INT < 13) {
+      int width = display.getWidth();
+      int height = display.getHeight();
+      screenResolution.set(width, height);
     }
-    screenResolution = new Point(width, height);
+    else {
+      display.getSize(screenResolution);
+    }
+
+
     Log.i(TAG, "Screen resolution: " + screenResolution);
     cameraResolution = findBestPreviewSizeValue(parameters, screenResolution);
     Log.i(TAG, "Camera resolution: " + cameraResolution);
   }
 
   void setDesiredCameraParameters(Camera camera, boolean safeMode) {
+    // Checkout of screen orientation
+    WindowManager manager = (WindowManager) this.context.getSystemService(Context.WINDOW_SERVICE);
+    int rotation = manager.getDefaultDisplay().getRotation();
+    if (rotation == Surface.ROTATION_0) {
+      camera.setDisplayOrientation(90);
+    }
+
+
     Camera.Parameters parameters = camera.getParameters();
 
     if (parameters == null) {

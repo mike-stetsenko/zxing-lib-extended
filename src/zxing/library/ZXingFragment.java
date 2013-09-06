@@ -31,8 +31,6 @@ import android.view.WindowManager;
  * 
  */
 public class ZXingFragment extends Fragment implements SurfaceHolder.Callback {
-	public ZXingFragment() {
-	}
 
 	private static final String TAG = "zxing-frag";
 	boolean hasSurface;
