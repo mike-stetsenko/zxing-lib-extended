@@ -4,6 +4,11 @@ This allows for you to directly embed ZXing into your application **properly**.
 
 Please note: This does not contain enough (any more) to work as the normal ZXing application on it's own. Resources are missing and it will look crap. (The CaptureActivity and other stuff is to be removed when I get round to doing it).
 
+## Fixed
+
+* missed only landscape mode
+* fixed right place ViewfinderView on the screen
+
 ## Why?
 
 For my coursework, I have an Android app that uses barcode scanning but I want to make it seamless where I scan an item then an ID card without leaving the app.
@@ -50,6 +55,5 @@ Also, in the callback you will need to ask the fragment to start rescanning usin
 
 ## TODO
 
-* Make the viewfinder in the right place (modifying the way it gets height/width).
 * Remove un-needed code
 * Deploy to Maven Central somehow

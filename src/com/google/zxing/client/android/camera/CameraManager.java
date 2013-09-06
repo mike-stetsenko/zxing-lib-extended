@@ -42,8 +42,8 @@ public final class CameraManager {
 
   private static final String TAG = CameraManager.class.getSimpleName();
 
-  private static final int MIN_FRAME_WIDTH = 240;
-  private static final int MIN_FRAME_HEIGHT = 240;
+  private static final int MIN_FRAME_WIDTH = 200;
+  private static final int MIN_FRAME_HEIGHT = 200;
   private static final int MAX_FRAME_WIDTH = 600;
   private static final int MAX_FRAME_HEIGHT = 400;
 
@@ -65,7 +65,7 @@ public final class CameraManager {
   private final PreviewCallback previewCallback;
 
   public CameraManager(Context context) {
-    this.context = context;
+    this.context = context.getApplicationContext();
     this.configManager = new CameraConfigurationManager(context);
     previewCallback = new PreviewCallback(configManager);
     windowManager = (WindowManager) this.context.getSystemService(Context.WINDOW_SERVICE);
@@ -228,8 +228,10 @@ public final class CameraManager {
         height = MAX_FRAME_HEIGHT;
       }
       int leftOffset = (screenResolution.x - width) / 2;
-      int topOffset = (screenResolution.y - height) / 2;
-      framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
+      int topOffset, bottomOffset;
+      topOffset = (screenResolution.y - height) / 2;
+      bottomOffset =  topOffset + height;
+      framingRect = new Rect(leftOffset, topOffset, leftOffset + width, bottomOffset);
       Log.d(TAG, "Calculated framing rect: " + framingRect);
     }
     return framingRect;
@@ -285,16 +287,7 @@ public final class CameraManager {
    */
   public synchronized void setManualFramingRect(int width, int height) {
     if (initialized) {
-      Point screenResolution = configManager.getScreenResolution();
-      if (width > screenResolution.x) {
-        width = screenResolution.x;
-      }
-      if (height > screenResolution.y) {
-        height = screenResolution.y;
-      }
-      int leftOffset = (screenResolution.x - width) / 2;
-      int topOffset = (screenResolution.y - height) / 2;
-      framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
+      framingRect = getFramingRect();
       Log.d(TAG, "Calculated manual framing rect: " + framingRect);
       framingRectInPreview = null;
     } else {

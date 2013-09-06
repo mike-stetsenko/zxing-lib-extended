@@ -16,15 +16,20 @@
 
 package com.google.zxing.client.android.camera;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Surface;
+import android.view.Window;
 import android.view.WindowManager;
 
 import com.google.zxing.client.android.PreferencesActivity;
@@ -50,32 +55,45 @@ final class CameraConfigurationManager {
   private static final int MAX_PREVIEW_PIXELS = 1280 * 720;
 
   private final Context context;
+  private final Activity activity;
   private Point screenResolution;
   private Point cameraResolution;
 
   CameraConfigurationManager(Context context) {
-    this.context = context;
+    this.context = context.getApplicationContext();
+    this.activity = (Activity) context;
   }
 
   /**
    * Reads, one time, values from the camera that are needed by the app.
    */
-  @SuppressWarnings("deprecation")
   void initFromCameraParameters(Camera camera) {
     Camera.Parameters parameters = camera.getParameters();
     WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
     Display display = manager.getDefaultDisplay();
+    DisplayMetrics metrics = new DisplayMetrics();
+    display.getMetrics(metrics);
 
     screenResolution = new Point();
-    if (Build.VERSION.SDK_INT < 13) {
-      int width = display.getWidth();
-      int height = display.getHeight();
-      screenResolution.set(width, height);
+    int width = metrics.widthPixels;
+    int height = metrics.heightPixels;
+
+    // Remove action bar height
+    TypedValue typedValue = new TypedValue();
+    DisplayMetrics displayMetrics = this.context.getResources().getDisplayMetrics();
+    if (this.context.getTheme().resolveAttribute(android.R.attr.actionBarSize, typedValue, true)) {
+        height -= TypedValue.complexToDimensionPixelSize(typedValue.data, displayMetrics);
     }
     else {
-      display.getSize(screenResolution);
+        if (display.getRotation() == Surface.ROTATION_0)
+            height -= 40 * displayMetrics.density;
+        else
+            height -= 48 * displayMetrics.density;
     }
 
+    height -= statusBarHeight();
+
+    screenResolution.set(width, height);
 
     Log.i(TAG, "Screen resolution: " + screenResolution);
     cameraResolution = findBestPreviewSizeValue(parameters, screenResolution);
@@ -273,4 +291,15 @@ final class CameraConfigurationManager {
     return result;
   }
 
+  private int statusBarHeight() {
+      int result = 0;
+      if (this.activity != null) {
+          Window window = this.activity.getWindow();
+          Rect rect = new Rect();
+          window.getDecorView().getWindowVisibleDisplayFrame(rect);
+          result = rect.top;
+      }
+
+      return result;
+  }
 }
