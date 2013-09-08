@@ -227,6 +227,10 @@ public final class CameraManager {
       } else if (height > MAX_FRAME_HEIGHT) {
         height = MAX_FRAME_HEIGHT;
       }
+
+      if (width < height)
+        height = width;
+
       int leftOffset = (screenResolution.x - width) / 2;
       int topOffset, bottomOffset;
       topOffset = (screenResolution.y - height) / 2;
