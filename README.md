@@ -4,15 +4,6 @@ This allows for you to directly embed ZXing into your application **properly**.
 
 Please note: This does not contain enough (any more) to work as the normal ZXing application on it's own. Resources are missing and it will look crap. (The CaptureActivity and other stuff is to be removed when I get round to doing it).
 
-## Fixed
-
-* missed only landscape mode
-* fixed right place ViewfinderView on the screen
-
-## Why?
-
-For my coursework, I have an Android app that uses barcode scanning but I want to make it seamless where I scan an item then an ID card without leaving the app.
-
 ## Setup
 
 Once cloned, you will need to deploy it via Maven. This is done by running `mvn clean install`.
@@ -22,11 +13,21 @@ In your application add it to pom.xml:
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>android-lib</artifactId>
-            <version>2.1</version>
+            <version>3.1</version>
             <type>apklib</type>
         </dependency>
 
 If someone is a really nice person, they could deploy it to Maven Central (i have no idea).
+
+## Gradle support
+
+Now, you can add zxing-lib-extended to your libraries directory and declare that into settings.gradle as
+
+    include ':libraries:zxing-lib-extended'
+
+and default build.gradle:
+
+    compile project(':libraries:zxing-lib-extended')
 
 ## How to use
 
@@ -57,3 +58,4 @@ Also, in the callback you will need to ask the fragment to start rescanning usin
 
 * Remove un-needed code
 * Deploy to Maven Central somehow
+* Replace setDecodeCallback method to onAttach ZXingFragment

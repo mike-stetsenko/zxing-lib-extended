@@ -22,13 +22,12 @@ import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.Collection;
-
 import com.google.zxing.client.android.PreferencesActivity;
 import com.google.zxing.client.android.common.executor.AsyncTaskExecInterface;
 import com.google.zxing.client.android.common.executor.AsyncTaskExecManager;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 final class AutoFocusManager implements Camera.AutoFocusCallback {
 

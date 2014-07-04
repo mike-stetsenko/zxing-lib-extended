@@ -1,13 +1,5 @@
 package zxing.library;
 
-import java.io.IOException;
-
-import com.google.zxing.Result;
-import com.google.zxing.client.android.FinishListener;
-import com.google.zxing.client.android.R;
-import com.google.zxing.client.android.ViewfinderView;
-import com.google.zxing.client.android.camera.CameraManager;
-
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -15,13 +7,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.*;
+import com.google.zxing.Result;
+import com.google.zxing.client.android.FinishListener;
+import com.google.zxing.client.android.R;
+import com.google.zxing.client.android.ViewfinderView;
+import com.google.zxing.client.android.camera.CameraManager;
+
+import java.io.IOException;
 
 /**
  * A fragment that provides all of the UI/processing required to handle barcode

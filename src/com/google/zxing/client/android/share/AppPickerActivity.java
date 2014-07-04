@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.provider.Browser;
 import android.view.View;
 import android.widget.ListView;
-
 import com.google.zxing.client.android.common.executor.AsyncTaskExecInterface;
 import com.google.zxing.client.android.common.executor.AsyncTaskExecManager;
 
