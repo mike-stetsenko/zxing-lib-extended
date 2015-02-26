@@ -4,5 +4,7 @@ bin
 .project
 .settings
 .classpath
+.idea
 
 gen
+*.iml

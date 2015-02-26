@@ -100,8 +100,9 @@ final class CameraConfigurationManager {
     int rotation = manager.getDefaultDisplay().getRotation();
     if (rotation == Surface.ROTATION_0) {
       camera.setDisplayOrientation(90);
+    } else if (rotation == Surface.ROTATION_270) {
+        camera.setDisplayOrientation(180);
     }
-
 
     Camera.Parameters parameters = camera.getParameters();
 
