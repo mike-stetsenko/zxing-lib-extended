@@ -1,10 +1,13 @@
 .svn
 target
 bin
+build
 .project
 .settings
 .classpath
+.gradle
 .idea
 
 gen
 *.iml
+local.properties
