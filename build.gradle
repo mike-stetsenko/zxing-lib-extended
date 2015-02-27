@@ -1,6 +1,8 @@
 apply plugin: "com.android.library"
+apply plugin: 'maven'
+apply plugin: 'git-repo'
 
-def currentVersion = '0.8.0'
+def currentVersion = '0.8.1'
 
 buildscript {
     repositories {
@@ -8,7 +10,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.0.0'
-
+        classpath 'com.ryanharter.gradle-git-repo:gradle-plugin:1.0.1'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -20,6 +22,44 @@ repositories {
 //    maven {
 //        url "https://raw.github.com/embarkmobile/zxing-android-minimal/mvn-repo/maven-repository/"
 //    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: 'git@github.com:mike-stetsenko/zxing-mvn-repo.git')
+            snapshotRepository(url: 'git@github.com:mike-stetsenko/zxing-mvn-repo.git')
+
+            // standard pom settings
+            pom.project {
+
+                name 'ZXing Barcode Scanner Android library'
+                description 'ZXing fork with some modefications - portrait mode, etc.'
+                url 'https://github.com/mike-stetsenko/zxing-lib-extended'
+
+                groupId 'com.mairos'
+                artifactId 'zxing'
+                packaging 'aar'
+                version currentVersion
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'mairos'
+                        name 'Mike Stetsenko'
+                        email 'stetsenkom@gmail.com'
+                    }
+                }
+            }
+        }
+    }
 }
 
 android {
