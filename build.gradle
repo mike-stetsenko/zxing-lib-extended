@@ -21,12 +21,19 @@ repositories {
 
 //    maven {
 //        url "https://raw.github.com/embarkmobile/zxing-android-minimal/mvn-repo/maven-repository/"
+//        url "https://bitbucket.org/softbalanceandroid/maven_repo/raw/HEAD/"
 //    }
 }
 
 uploadArchives {
     repositories {
         mavenDeployer {
+
+            // TODO for manual deploy - current artifacts repo MUST be cloned in folder 'userHome'
+            //def userHome = "file://" + System.getProperty("user.dir") + "/build/maven-deploy"
+            //repository(url: userHome)
+
+            // FIXME directory failure - now the deploy result can go the wrong way
             repository(url: 'git@github.com:mike-stetsenko/zxing-mvn-repo.git')
             snapshotRepository(url: 'git@github.com:mike-stetsenko/zxing-mvn-repo.git')
 
