@@ -21,17 +21,21 @@ If someone is a really nice person, they could deploy it to Maven Central (i hav
 
 ## Gradle support
 
-Now, you can add zxing-lib-extended to your libraries directory and declare that into settings.gradle as
+You can add upload zxing-lib-extended into your project by connecting to 
+current maven-repo into your 'build.gradle' file
 
-    include ':libraries:zxing-lib-extended'
+    repositories {
+        ...
+        maven { url "https://raw.githubusercontent.com/mike-stetsenko/zxing-lib-extended/master/maven-repo" }
+    }
 
-and default build.gradle:
+and 'dependencies' section:
 
-    compile project(':libraries:zxing-lib-extended')
+    compile 'com.mairos:zxing:0.8.2'
 
 ## How to use
 
-You should only require the use of classes (my code) locaed in namespace `zxing.library`.
+You should only require the use of classes (my code) located in namespace `zxing.library`.
 
 Everything is modernized into a Fragment, so you can add it to your layout like so:
 
@@ -57,5 +61,4 @@ Also, in the callback you will need to ask the fragment to start rescanning usin
 ## TODO
 
 * Remove un-needed code
-* Deploy to Maven Central somehow
 * Replace setDecodeCallback method to onAttach ZXingFragment
