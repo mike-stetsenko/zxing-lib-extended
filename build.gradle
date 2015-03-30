@@ -1,8 +1,7 @@
-apply plugin: "com.android.library"
+apply plugin: 'com.android.library'
 apply plugin: 'maven'
-apply plugin: 'git-repo'
 
-def currentVersion = '0.8.1'
+def currentVersion = '0.8.2'
 
 buildscript {
     repositories {
@@ -20,8 +19,7 @@ repositories {
     mavenCentral()
 
 //    maven {
-//        url "https://raw.github.com/embarkmobile/zxing-android-minimal/mvn-repo/maven-repository/"
-//        url "https://bitbucket.org/softbalanceandroid/maven_repo/raw/HEAD/"
+//        url "https://raw.github.com/mike-stetsenko/zxing-lib-extended/mvn-repo/"
 //    }
 }
 
@@ -29,13 +27,8 @@ uploadArchives {
     repositories {
         mavenDeployer {
 
-            // TODO for manual deploy - current artifacts repo MUST be cloned in folder 'userHome'
-            //def userHome = "file://" + System.getProperty("user.dir") + "/build/maven-deploy"
-            //repository(url: userHome)
-
-            // FIXME directory failure - now the deploy result can go the wrong way
-            repository(url: 'git@github.com:mike-stetsenko/zxing-mvn-repo.git')
-            snapshotRepository(url: 'git@github.com:mike-stetsenko/zxing-mvn-repo.git')
+            def userHome = 'file://' + System.getProperty('user.dir') + '/maven-repo'
+            repository(url: userHome)
 
             // standard pom settings
             pom.project {
@@ -90,14 +83,18 @@ android {
         }
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
     buildTypes {
         release {
             android.libraryVariants.all { variant ->
                 variant.outputs.each { output ->
                     def file = output.outputFile
-                    def new_file = new File(file.parent,
-                            file.name.replace(".aar", "." + currentVersion + ".aar"))
-                    output.outputFile = new_file
+                    def newFile = new File(file.parent,
+                            file.name.replace('.aar', '.' + currentVersion + '.aar'))
+                    output.outputFile = newFile
                 }
             }
             debuggable false
